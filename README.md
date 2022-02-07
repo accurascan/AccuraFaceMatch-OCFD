@@ -6,25 +6,12 @@ Below steps to setup Accura MRZ SDK's to your project.
 
 ## Install SDK in to your App
 
-#### Step 1: Add the JitPack repository to your build file:
-    Add it in your root build.gradle at the end of repositories.
+#### Step 1: Place the aar file:
+    Inside your app/lib folder place the accura_mrz-release.aar file
 
-    allprojects {
-        repositories {
-            ...
-            maven {
-                url 'https://jitpack.io'
-                credentials { username authToken }
-            }
-        }
-    }
-
-#### Step 2. Add the token to `gradle.properties`:
-
-    authToken=jp_9ldoc7h8fl5gbk4rsojgdiupa9
-
-#### Step 3: Add the dependency:
-    Set Accura MRZ SDK as a dependency to our app/build.gradle file.
+#### Step 2: Add dependency:
+    Link the aar file through your app's gradle file
+    Also add 'api 'com.google.code.gson:gson:2.8.6' dependency and all other dependencies needed for your app
 
     android {
         compileOptions {
@@ -33,16 +20,30 @@ Below steps to setup Accura MRZ SDK's to your project.
         }
     }
     dependencies {
-        implementation 'com.github.accurascan:AccuraMRZ-AndroidSDK:2.1.0'
+         implementation fileTree(dir: "libs", include: ["*.jar"])
+   	 implementation 'androidx.appcompat:appcompat:1.3.1'
+    	 implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    	 testImplementation 'junit:junit:4.13.2'
+    	 androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    	 androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    	// Glide
+    	implementation 'com.github.bumptech.glide:glide:4.11.0'
+    	annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    	implementation 'com.google.android.material:material:1.5.0-alpha01'
+
+        api 'com.google.code.gson:gson:2.8.6'
+
+   	//Implement ACCURA_MRZ_SDK AAR file
+    	implementation files('libs\\accura_mrz-release.aar')
     }
 
-#### Step 4: Add files to project assets folder:
+#### Step 3: Add files to project assets folder:
 
-* Create "assets" folder under `app/src/main` and Add `key.license` file in to assets folder.
+* Create "assets" folder under `app/src/main` and Add `key.license` file in assets folder.
 
 * Generate your Accura license from https://accurascan.com/developer/dashboard
 
-## 1. Setup Accura MRZ
+## Setup Accura MRZ
 * Require `key.license` to implement Accura MRZ in to your app
 
 #### Step 1 : To initialize sdk on app start:
