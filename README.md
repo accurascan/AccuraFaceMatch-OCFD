@@ -6,12 +6,12 @@ Below steps to setup Accura MRZ SDK to your project.
 
 ## Install SDK in to your App
 
-#### Step 1: Place the aar file:
-    Inside your app/lib/ folder place the accura_mrz-release.aar file
+#### Step 1: Check the aar file:
+    Make sure accura_mrz-release.aar file is there inside your app/lib/ folder 
 
 #### Step 2: Add dependency:
     Link the aar file through your app's gradle file.
-    Also add api 'com.google.code.gson:gson:2.8.6' dependency and all other dependencies needed for your app
+    Also add "api 'com.google.code.gson:gson:2.8.6'" dependency and all other dependencies needed for your app
 
     android {
         compileOptions {
