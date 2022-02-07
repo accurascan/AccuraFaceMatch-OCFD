@@ -29,6 +29,7 @@ Below steps to setup Accura MRZ SDK to your project.
 		implementation 'com.github.bumptech.glide:glide:4.11.0'
 		annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 		implementation 'com.google.android.material:material:1.5.0-alpha01'
+		
 		api 'com.google.code.gson:gson:2.8.6'
 	
 		//Implement ACCURA_MRZ_SDK AAR file
