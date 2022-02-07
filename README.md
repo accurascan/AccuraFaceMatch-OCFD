@@ -20,7 +20,7 @@ Below steps to setup Accura MRZ SDK's to your project.
         }
     }
     dependencies {
-    	implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
 	implementation 'androidx.appcompat:appcompat:1.3.1'
 	implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 	testImplementation 'junit:junit:4.13.2'
