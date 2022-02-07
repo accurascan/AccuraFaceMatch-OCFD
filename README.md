@@ -20,19 +20,19 @@ Below steps to setup Accura MRZ SDK's to your project.
         }
     }
     dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-	implementation 'androidx.appcompat:appcompat:1.3.1'
-	implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-	testImplementation 'junit:junit:4.13.2'
-	androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-	androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-	implementation 'com.github.bumptech.glide:glide:4.11.0'
-	annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-	implementation 'com.google.android.material:material:1.5.0-alpha01'
-	api 'com.google.code.gson:gson:2.8.6'
+    	implementation fileTree(dir: "libs", include: ["*.jar"])
+		implementation 'androidx.appcompat:appcompat:1.3.1'
+		implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+		testImplementation 'junit:junit:4.13.2'
+		androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+		androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+		implementation 'com.github.bumptech.glide:glide:4.11.0'
+		annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+		implementation 'com.google.android.material:material:1.5.0-alpha01'
+		api 'com.google.code.gson:gson:2.8.6'
 	
-	//Implement ACCURA_MRZ_SDK AAR file
-	implementation files('libs\\accura_mrz-release.aar')
+		//Implement ACCURA_MRZ_SDK AAR file
+		implementation files('libs\\accura_mrz-release.aar')
     }
 
 #### Step 3: Add files to project assets folder:
