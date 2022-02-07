@@ -2,7 +2,7 @@
 
 Accura MRZ is used for Optical character recognition.<br/>
 
-Below steps to setup Accura MRZ SDK's to your project.
+Below steps to setup Accura MRZ SDK to your project.
 
 ## Install SDK in to your App
 
