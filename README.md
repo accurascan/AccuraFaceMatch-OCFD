@@ -1,83 +1,106 @@
 # AccuraMRZ-Android-SDK-OCFD
 
-Accura MRZ is used for Optical character recognition.
+Accura MRZ is used for Optical character recognition.<br/>
 
 Below steps to setup Accura MRZ SDK's to your project.
 
-Install SDK in to your App
-Step 1: Add the JitPack repository to your build file:
-Add it in your root build.gradle at the end of repositories.
+## Install SDK in to your App
 
-allprojects {
-    repositories {
-        ...
-        maven {
-            url 'https://jitpack.io'
-            credentials { username authToken }
+#### Step 1: Add the JitPack repository to your build file:
+    Add it in your root build.gradle at the end of repositories.
+
+    allprojects {
+        repositories {
+            ...
+            maven {
+                url 'https://jitpack.io'
+                credentials { username authToken }
+            }
         }
     }
-}
-Step 2. Add the token to gradle.properties:
-authToken=jp_9ldoc7h8fl5gbk4rsojgdiupa9
-Step 3: Add the dependency:
-Set Accura MRZ SDK as a dependency to our app/build.gradle file.
 
-android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+#### Step 2. Add the token to `gradle.properties`:
+
+    authToken=jp_9ldoc7h8fl5gbk4rsojgdiupa9
+
+#### Step 3: Add the dependency:
+    Set Accura MRZ SDK as a dependency to our app/build.gradle file.
+
+    android {
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
     }
-}
-dependencies {
-    implementation 'com.github.accurascan:AccuraMRZ-AndroidSDK:2.1.0'
-}
-Step 4: Add files to project assets folder:
-Create "assets" folder under app/src/main and Add key.license file in to assets folder.
+    dependencies {
+        implementation 'com.github.accurascan:AccuraMRZ-AndroidSDK:2.1.0'
+    }
 
-Generate your Accura license from https://accurascan.com/developer/dashboard
+#### Step 4: Add files to project assets folder:
 
-1. Setup Accura MRZ
-Require key.license to implement Accura MRZ in to your app
-Step 1 : To initialize sdk on app start:
-RecogEngine recogEngine = new RecogEngine();
-RecogEngine.SDKModel sdkModel = recogEngine.initEngine(your activity context);
+* Create "assets" folder under `app/src/main` and Add `key.license` file in to assets folder.
 
-if (sdkModel.i > 0) { // means license is valid
-     if (sdkModel.isMRZEnable) // True if MRZ option is selected while creating license
-}
-Update filters like below.
-Call this function after initialize sdk if license is valid(sdkModel.i > 0)
+* Generate your Accura license from https://accurascan.com/developer/dashboard
 
-Set Blur Percentage to allow blur on document
+## 1. Setup Accura MRZ
+* Require `key.license` to implement Accura MRZ in to your app
 
-//0 for clean document and 100 for Blurry document
-recogEngine.setBlurPercentage(Context context, int blurPercentage/*52*/);
-Set Face blur Percentage to allow blur on detected Face
+#### Step 1 : To initialize sdk on app start:
 
-// 0 for clean face and 100 for Blurry face
-recogEngine.setFaceBlurPercentage(Context context, int faceBlurPercentage/*70*/);
-Set Glare Percentage to detect Glare on document
+    RecogEngine recogEngine = new RecogEngine();
+    RecogEngine.SDKModel sdkModel = recogEngine.initEngine(your activity context);
 
-// Set min and max percentage for glare
-recogEngine.setGlarePercentage(Context context, int /*minPercentage*/6, int /*maxPercentage*/98);
-Set Photo Copy to allow photocopy document or not
+    if (sdkModel.i > 0) { // means license is valid
+         if (sdkModel.isMRZEnable) // True if MRZ option is selected while creating license
+    }
 
-// Set min and max percentage for glare
-recogEngine.isCheckPhotoCopy(Context context, boolean /*isCheckPhotoCopy*/false);
-Set Hologram detection to verify the hologram on the face
+##### Update filters like below.</br>
+  Call this function after initialize sdk if license is valid(sdkModel.i > 0)
+   * Set Blur Percentage to allow blur on document
 
-// true to check hologram on face
-recogEngine.SetHologramDetection(Context context, boolean /*isDetectHologram*/true);
-Set light tolerance to detect light on document
+        ```
+		//0 for clean document and 100 for Blurry document
+		recogEngine.setBlurPercentage(Context context, int blurPercentage/*52*/);
+		```
+   * Set Face blur Percentage to allow blur on detected Face
 
-// 0 for full dark document and 100 for full bright document
-recogEngine.setLowLightTolerance(Context context, int /*tolerance*/39);
-Set motion threshold to detect motion on camera document
+        ```
+		// 0 for clean face and 100 for Blurry face
+		recogEngine.setFaceBlurPercentage(Context context, int faceBlurPercentage/*70*/);
+        ```
+   * Set Glare Percentage to detect Glare on document
 
-  // 1 - allows 1% motion on document and
-  // 100 - it can not detect motion and allow document to scan.
-  recogEngine.setMotionThreshold(Context context, int /*motionThreshold*/18);
-Step 2 : Set CameraView
+        ```
+		// Set min and max percentage for glare
+		recogEngine.setGlarePercentage(Context context, int /*minPercentage*/6, int /*maxPercentage*/98);
+		```
+   * Set Photo Copy to allow photocopy document or not
+
+        ```
+		// Set min and max percentage for glare
+		recogEngine.isCheckPhotoCopy(Context context, boolean /*isCheckPhotoCopy*/false);
+		```
+   * Set Hologram detection to verify the hologram on the face
+
+        ```
+		// true to check hologram on face
+		recogEngine.SetHologramDetection(Context context, boolean /*isDetectHologram*/true);
+		```
+   * Set light tolerance to detect light on document
+
+        ```
+        // 0 for full dark document and 100 for full bright document
+        recogEngine.setLowLightTolerance(Context context, int /*tolerance*/39);
+        ```
+   * Set motion threshold to detect motion on camera document
+		```
+        // 1 - allows 1% motion on document and
+        // 100 - it can not detect motion and allow document to scan.
+        recogEngine.setMotionThreshold(Context context, int /*motionThreshold*/18);
+        ```
+
+#### Step 2 : Set CameraView
+```
 Must have to extend com.accurascan.ocr.mrz.motiondetection.SensorsActivity to your activity.
 - Make sure your activity orientation locked from Manifest. Because auto rotate not support.
 
@@ -293,8 +316,13 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
         }
     }
 }
-ProGuard
+```
+
+## ProGuard
+
 Depending on your ProGuard (DexGuard) config and usage, you may need to include the following lines in your proguards.
 
+```
 -keep class com.accurascan.ocr.mrz.model.* {;}
 -keep class com.accurascan.ocr.mrz.interfaces.* {;}
+```
