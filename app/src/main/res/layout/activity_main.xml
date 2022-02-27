@@ -4,68 +4,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="25dp"
-    tools:context=".MainActivity">
+    tools:context="com.accurascan.accura.kyc.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/lout_country"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.accurascan.ocr.mrz.customview.CustomTextView
-            android:id="@+id/lout_passport_mrz"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:background="@drawable/btn_bg_gray"
-            android:padding="@dimen/_15dp"
-            android:text="@string/passport_mrz"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:typeface="ALLER_STD_REG" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-        <com.accurascan.ocr.mrz.customview.CustomTextView
-            android:id="@+id/lout_id_mrz"
+            <LinearLayout
+                android:id="@+id/lout_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.accurascan.customview.CustomTextView
+                    android:id="@+id/lout_passport_mrz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/btn_bg_gray"
+                    android:padding="@dimen/_15dp"
+                    android:text="@string/passport_mrz"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:typeface="ALLER_STD_REG"
+                    android:visibility="gone"/>
+
+                <com.accurascan.customview.CustomTextView
+                    android:id="@+id/lout_id_mrz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/btn_bg_gray"
+                    android:padding="@dimen/_15dp"
+                    android:text="@string/id_mrz"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:typeface="ALLER_STD_REG"
+                    android:visibility="gone"/>
+
+                <com.accurascan.customview.CustomTextView
+                    android:id="@+id/lout_visa_mrz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/btn_bg_gray"
+                    android:padding="@dimen/_15dp"
+                    android:text="@string/visa_mrz"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:typeface="ALLER_STD_REG"
+                    android:visibility="gone"/>
+
+                <com.accurascan.customview.CustomTextView
+                    android:id="@+id/lout_mrz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/btn_bg_gray"
+                    android:padding="@dimen/_15dp"
+                    android:text="@string/other_mrz"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:typeface="ALLER_STD_REG"
+                    android:visibility="gone"/>
+
+                <com.accurascan.customview.CustomTextView
+                    android:id="@+id/lout_bank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/btn_bg_gray"
+                    android:padding="@dimen/_15dp"
+                    android:text="@string/bank_card"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:typeface="ALLER_STD_REG"
+                    android:visibility="gone"/>
+
+                <com.accurascan.customview.CustomTextView
+                    android:id="@+id/lout_barcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/btn_bg_gray"
+                    android:padding="@dimen/_15dp"
+                    android:text="Barcode"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:typeface="ALLER_STD_REG"
+                    android:visibility="gone"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_layout" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:background="@drawable/btn_bg_gray"
-            android:padding="@dimen/_15dp"
-            android:text="@string/id_mrz"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:typeface="ALLER_STD_REG" />
-
-        <com.accurascan.ocr.mrz.customview.CustomTextView
-            android:id="@+id/lout_visa_mrz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:background="@drawable/btn_bg_gray"
-            android:padding="@dimen/_15dp"
-            android:text="@string/visa_mrz"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:typeface="ALLER_STD_REG" />
-
-        <com.accurascan.ocr.mrz.customview.CustomTextView
-            android:id="@+id/lout_mrz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:background="@drawable/btn_bg_gray"
-            android:padding="@dimen/_15dp"
-            android:text="@string/other_mrz"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:typeface="ALLER_STD_REG" />
-
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_layout" />
+    </RelativeLayout>
 
 </LinearLayout>

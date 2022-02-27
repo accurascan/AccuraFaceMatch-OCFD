@@ -7,4 +7,12 @@
     <color name="darkGray">#2f323a</color>
     <color name="lightGray">#64676c</color>
     <color name="backGroundColor">#edeff5</color>
+
+
+    // Accura liveness camera screen
+    <color name="livenessBackground">#FFC4C4C5</color>
+    <color name="livenessCloseIcon">#FF000000</color>
+    <color name="livenessfeedbackBg">#00000000</color>
+    <color name="livenessfeedbackText">#FF000000</color>
+    <color name="livenessRecordingText">#FF555555</color>
 </resources>

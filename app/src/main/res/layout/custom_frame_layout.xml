@@ -119,7 +119,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true">
 
-            <com.accurascan.ocr.mrz.customview.CustomTextView
+            <com.accurascan.customview.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Powered By"

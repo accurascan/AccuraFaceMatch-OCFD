@@ -17,7 +17,7 @@
         android:layout_marginEnd="@dimen/_15dp"
         >
 
-        <com.accurascan.ocr.mrz.customview.CustomTextView
+        <com.accurascan.customview.CustomTextView
             android:id="@+id/tv_key"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             <!--android:layout_centerVertical="true"-->
             <!--android:minHeight="40dp"/>-->
 
-            <com.accurascan.ocr.mrz.customview.CustomTextView
+            <com.accurascan.customview.CustomTextView
                 android:id="@+id/tv_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
