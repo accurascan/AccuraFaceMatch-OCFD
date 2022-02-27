@@ -1,4 +1,4 @@
-# AccuraMRZ-Android-SDK-OCFD
+# AccuraMRZ-FM-Android-SDK-OCFD
 
 Accura MRZ is used for Optical character recognition.<br/>
 
@@ -7,7 +7,7 @@ Below steps to setup Accura MRZ SDK to your project.
 ## Install SDK in to your App
 
 #### Step 1: Check the aar file:
-    Make sure accura_mrz-release.aar file is there inside your app/lib/ folder 
+    Make sure accura_mrz_fm_liveness-release.aar file is there inside your app/lib/ folder 
 
 #### Step 2: Add dependency:
     Link the aar file through your app's gradle file.
@@ -32,13 +32,13 @@ Below steps to setup Accura MRZ SDK to your project.
 		
 		api 'com.google.code.gson:gson:2.8.6'
 	
-		//Implement ACCURA_MRZ_SDK AAR file
-		implementation files('libs\\accura_mrz-release.aar')
+		//Implement ACCURA_MRZ_FM_SDK AAR file
+		implementation files('libs\\accura_mrz_fm_liveness-release.aar')
     }
 
 #### Step 3: Add files to project assets folder:
 
-* Create "assets" folder under `app/src/main` and Add `key.license` file in assets folder.
+* Create "assets" folder under `app/src/main` and Add `key.license` & 'accuraface.license' file in assets folder.
 
 * Generate your Accura license from https://accurascan.com/developer/dashboard
 
@@ -132,16 +132,17 @@ private void initCamera() {
 
     RelativeLayout linearLayout = findViewById(R.id.ocr_root); // layout width and height is match_parent
 
-    cameraView = new CameraView(this);
-   
-    // Also set MRZ document type to scan specific MRZ document
-    // 1. ALL MRZ document       - MRZDocumentType.NONE        
-    // 2. Passport MRZ document  - MRZDocumentType.PASSPORT_MRZ
-    // 3. ID card MRZ document   - MRZDocumentType.ID_CARD_MRZ 
-    // 4. Visa MRZ document      - MRZDocumentType.VISA_MRZ    
-    cameraView.setMRZDocumentType(MRZDocumentType.NONE);
+    if (recogType == RecogType.MRZ) {
+        // Also set MRZ document type to scan specific MRZ document
+        // 1. ALL MRZ document       - MRZDocumentType.NONE        
+        // 2. Passport MRZ document  - MRZDocumentType.PASSPORT_MRZ
+        // 3. ID card MRZ document   - MRZDocumentType.ID_CARD_MRZ 
+        // 4. Visa MRZ document      - MRZDocumentType.VISA_MRZ    
+        cameraView.setMRZDocumentType(mrzDocumentType);
+    }
     
-    cameraView.setView(linearLayout) // To add camera view
+    cameraView.setRecogType(recogType)//or RecogType.MRZ
+            .setView(linearLayout) // To add camera view
             .setCameraFacing(0) // // To set selfie(1) or rear(0) camera.
             .setOcrCallback(this)  // To get feedback and Success Call back
             .setStatusBarHeight(statusBarHeight)  // To remove Height from Camera View if status bar visible
@@ -213,14 +214,21 @@ public void onUpdateLayout(int width, int height) {
  * @param result is scanned card data
  *
  */
-@Override
-public void onScannedComplete(RecogResult result) {
-    // display data on ui thread
-    Log.e("TAG", "onScannedComplete: ");
-    if (result != null) {
-        RecogResult.setRecogResult((RecogResult) result);
-    } else Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
-}
+ @Override
+    public void onScannedComplete(Object result) {
+        Runtime.getRuntime().gc(); // To clear garbage
+        AccuraLog.loge(TAG, "onScannedComplete: ");
+        if (result != null) {
+                if (result instanceof RecogResult) {
+                /**
+                 *  @recogType is {@link RecogType#MRZ}*/
+                RecogResult.setRecogResult((RecogResult) result);
+                sendDataToResultActivity(RecogType.MRZ);
+            }
+            }
+        else Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+    }
+
 
 /**
  * @param titleCode to display scan card message on top of border Frame
@@ -230,25 +238,32 @@ public void onScannedComplete(RecogResult result) {
  * @param isFlip  true to set your customize animation for scan back card alert after complete front scan
  *                and also used cameraView.flipImage(ImageView) for default animation
  */
-@Override
-public void onProcessUpdate(int titleCodetitleCode, String errorMessage, boolean isFlip) {
-	// Put UI thread to update UI elements
-    runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-          if (getTitleMessage(titleCode) != null) { // check
-              Toast.makeText(this, getTitleMessage(titleCode), Toast.LENGTH_SHORT).show(); // display title
-          }
-          if (message != null) {
-              Toast.makeText(this, getErrorMessage(message), Toast.LENGTH_SHORT).show(); // display message
-          }
-          if (isFlip) {
-          // To set default animation or remove this line to set your custom animation after successfully scan front side.
-              CameraView.flipImage(imageView);
-          }
-      }
-	});
-}
+  @Override
+    public void onProcessUpdate(int titleCode, String errorMessage, boolean isFlip) {
+        AccuraLog.loge(TAG, "onProcessUpdate :-> " + titleCode + "," + errorMessage + "," + isFlip);
+        Message message;
+        if (getTitleMessage(titleCode) != null) {
+            
+            message = new Message();
+            message.what = 0;
+            message.obj = getTitleMessage(titleCode);
+            handler.sendMessage(message);
+//            tvTitle.setText(title);
+        }
+        if (errorMessage != null) {
+            message = new Message();
+            message.what = 1;
+            message.obj = getErrorMessage(errorMessage);
+            handler.sendMessage(message);
+//            tvScanMessage.setText(message);
+        }
+        if (isFlip) {
+            message = new Message();
+            message.what = 2;
+            handler.sendMessage(message);//  to set default animation or remove this line to set your customize animation
+        }
+
+    }
 
 @Override
 public void onError(String errorMessage) {
@@ -260,10 +275,10 @@ public void onError(String errorMessage) {
 private String getTitleMessage(int titleCode) {
     if (titleCode < 0) return null;
     switch (titleCode){
-        case RecogEngine.SCAN_TITLE_MRZ_FRONT:
-            return "Scan Front Side of Document";
-        case RecogEngine.SCAN_TITLE_MRZ_BACK:
-            return "Now Scan Back Side of Document";
+          case RecogEngine.SCAN_TITLE_MRZ_PDF417_FRONT:// for front side MRZ
+              return "Scan Front Side of Document";
+          case RecogEngine.SCAN_TITLE_MRZ_PDF417_BACK: // for back side MRZ
+               return "Now Scan Back Side of Document";
         default:return "";
     }
 }
@@ -318,11 +333,150 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
 }
 ```
 
-## ProGuard
 
-Depending on your ProGuard (DexGuard) config and usage, you may need to include the following lines in your proguards.
+## 2. Setup Accura Face Match
+* Require `accuraface.license` to implement AccuraFaceMatch SDK in to your app
 
-```
--keep class com.accurascan.ocr.mrz.model.* {;}
--keep class com.accurascan.ocr.mrz.interfaces.* {;}
-```
+#### Step 1 : Add following code in Manifest.
+    <manifest>
+        ...
+        <uses-permission android:name="android.permission.CAMERA" />
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    </manifest>
+
+#### Step 2 : Open auto capture camera
+    LivenessCustomization cameraScreenCustomization = new LivenessCustomization();
+    
+    cameraScreenCustomization.backGroundColor = getResources().getColor(R.color.fm_camera_Background);
+    cameraScreenCustomization.closeIconColor = getResources().getColor(R.color.fm_camera_CloseIcon);
+    cameraScreenCustomization.feedbackBackGroundColor = getResources().getColor(R.color.fm_camera_feedbackBg);
+    cameraScreenCustomization.feedbackTextColor = getResources().getColor(R.color.fm_camera_feedbackText);
+    cameraScreenCustomization.feedbackTextSize = 18;
+    cameraScreenCustomization.feedBackframeMessage = "Frame Your Face";
+    cameraScreenCustomization.feedBackAwayMessage = "Move Phone Away";
+    cameraScreenCustomization.feedBackOpenEyesMessage = "Keep Your Eyes Open";
+    cameraScreenCustomization.feedBackCloserMessage = "Move Phone Closer";
+    cameraScreenCustomization.feedBackCenterMessage = "Move Phone Center";
+    cameraScreenCustomization.feedBackMultipleFaceMessage = "Multiple Face Detected";
+    cameraScreenCustomization.feedBackHeadStraightMessage = "Keep Your Head Straight";
+    cameraScreenCustomization.feedBackBlurFaceMessage = "Blur Detected Over Face";
+    cameraScreenCustomization.feedBackGlareFaceMessage = "Glare Detected";
+
+    // 0 for clean face and 100 for Blurry face or set it -1 to remove blur filter
+    cameraScreenCustomization.setBlurPercentage(80/*blurPercentage*/); // To allow blur on face
+                                                    
+    // Set min and max percentage for glare or set it -1 to remove glare filter
+	cameraScreenCustomization.setGlarePercentage(6/*glareMinPercentage*/, 99/*glareMaxPercentage*/);
+    
+    Intent intent = SelfieCameraActivity.getFaceMatchCameraIntent(this, cameraScreenCustomization);
+    startActivityForResult(intent, ACCURA_FACEMATCH_CAMERA);
+    
+    // Handle accura fm camera result.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ACCURA_LIVENESS_CAMERA && data != null) {
+                AccuraFMCameraModel result = data.getParcelableExtra("Accura.fm");
+                if (result == null) {
+                    return;
+                }
+                if (result.getStatus().equals("1")) {
+                    // result bitmap
+                    Bitmap bitmap = result.getFaceBiometrics();
+                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed" + result.getStatus(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+#### Step 3 : Implement face match code manually to your activity.
+
+    Important Grant Camera and storage Permission.
+
+    must have to implements FaceCallback, FaceHelper.FaceMatchCallBack to your activity
+    ImageView image1,image2;
+
+    // Initialized facehelper in onCreate.
+    FaceHelper helper = new FaceHelper(this);
+
+    TextView tvFaceMatch = findViewById(R.id.tvFM);
+    tvFaceMatch.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+            ********** For faceMatch
+            
+            // To pass two image uri for facematch.
+            // @params uri1 is for input image
+            // @params uri2 is for match image
+            
+            helper.getFaceMatchScore(uri1, uri2);
+
+
+            // also use some other method for for face match
+            // must have to helper.setInputImage first and then helper.setMatchImage
+            // helper.setInputImage(uri1);
+            // helper.setMatchImage(uri2);
+        
+        }
+    });
+    // Override methods of FaceMatchCallBack
+
+    @Override
+    public void onFaceMatch(float score) {
+        // get face match score
+        System.out.println("Match Score : " + ss + " %");
+    }
+
+    @Override
+    public void onSetInputImage(Bitmap src1) {
+        // set Input image to your view
+        image1.setImageBitmap(src1);
+    }
+
+    @Override
+    public void onSetMatchImage(Bitmap src2) {
+        // set Match image to your view
+        image2.setImageBitmap(src2);
+    }
+
+    // Override methods for FaceCallback
+
+    @Override
+    public void onInitEngine(int ret) {
+    }
+
+    //call if face detect
+    
+    @Override
+    public void onLeftDetect(FaceDetectionResult faceResult) {
+        // must have to call helper method onLeftDetect(faceResult) to get faceMatch score.
+        helper.onLeftDetect(faceResult);
+    }
+
+    //call if face detect
+    @Override
+    public void onRightDetect(FaceDetectionResult faceResult) {
+        // must have to call helper method onRightDetect(faceResult) to get faceMatch score.
+        helper.onRightDetect(faceResult);
+    }
+
+    @Override
+    public void onExtractInit(int ret) {
+    }
+
+    And take a look ActivityFaceMatch.java for full working example.
+    
+#### Step 4 : Simple Usage to face match in your app.
+
+    // Just add FaceMatchActivity to your manifest:
+    <activity android:name="com.accurascan.facematch.ui.FaceMatchActivity"/>
+
+    // Start Intent to open activity
+    Intent intent = new Intent(this, FaceMatchActivity.class);
+    startActivity(intent);
+
+    Or follow the Manifest File of Demo Project to use FaceMatch.
+
+
