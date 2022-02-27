@@ -38,7 +38,7 @@ Below steps to setup Accura MRZ SDK to your project.
 
 #### Step 3: Add files to project assets folder:
 
-* Create "assets" folder under `app/src/main` and Add `key.license` & 'accuraface.license' file in assets folder.
+* Create "assets" folder under `app/src/main` and Add `key.license` & `accuraface.license` file in assets folder.
 
 * Generate your Accura license from https://accurascan.com/developer/dashboard
 
