@@ -8,6 +8,7 @@ Below steps to setup Accura MRZ SDK to your project.
 
 #### Step 1: Check the aar file:
     Make sure accura_mrz_fm_liveness-release.aar file is there inside your app/lib/ folder 
+    Remove All Other aar file to avoid duplicate issue.
 
 #### Step 2: Add dependency:
     Link the aar file through your app's gradle file.
