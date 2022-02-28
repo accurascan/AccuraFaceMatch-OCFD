@@ -362,6 +362,8 @@ protected void onActivityResult(int requestCode, int resultCode, @Nullable Inten
     cameraScreenCustomization.feedBackHeadStraightMessage = "Keep Your Head Straight";
     cameraScreenCustomization.feedBackBlurFaceMessage = "Blur Detected Over Face";
     cameraScreenCustomization.feedBackGlareFaceMessage = "Glare Detected";
+    cameraScreenCustomization.feedBackProcessingMessage = "Processing.."; 
+    cameraScreenCustomization.feedbackDialogMessage = "Processing...";
 
     // 0 for clean face and 100 for Blurry face or set it -1 to remove blur filter
     cameraScreenCustomization.setBlurPercentage(80/*blurPercentage*/); // To allow blur on face
