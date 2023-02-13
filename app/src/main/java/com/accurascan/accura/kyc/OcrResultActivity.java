@@ -454,7 +454,7 @@ public class OcrResultActivity extends BaseActivity implements FaceHelper.FaceMa
         livenessCustomization.codeTextSize = 30;
         livenessCustomization.codeTextColor = Color.WHITE;
 
-        Intent intent = SelfieCameraActivity.getLivenessCameraIntent(this, livenessCustomization, "https://accurascan.com:8443/check_liveness");
+        Intent intent = SelfieCameraActivity.getLivenessCameraIntent(this, livenessCustomization, "your liveness url");
         startActivityForResult(intent, ACCURA_LIVENESS_CAMERA);
     }
 
