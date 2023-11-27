@@ -1,3 +1,2 @@
-include ':accura_mrz_fm_liveness'
 include ':app'
 rootProject.name = "Accura_MRZ_Liveness_FM"
