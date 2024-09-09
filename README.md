@@ -16,8 +16,8 @@ Below steps to setup Accura MRZ SDK to your project.
 
     android {
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
         }
     }
     dependencies {
@@ -32,7 +32,8 @@ Below steps to setup Accura MRZ SDK to your project.
 		implementation 'com.google.android.material:material:1.5.0-alpha01'
 		
 		api 'com.google.code.gson:gson:2.8.6'
-	
+
+        implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:1.0.4'	
 		//Implement ACCURA_MRZ_FM_SDK AAR file
 		implementation files('libs\\accura_mrz_fm_liveness-release.aar')
     }
