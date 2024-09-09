@@ -482,7 +482,7 @@ public class OcrResultActivity extends BaseActivity implements FaceHelper.FaceMa
         cameraScreenCustomization.setGlarePercentage(-1, -1);
         cameraScreenCustomization.showlogo=1;
 
-       //cameraScreenCustomization.logoPath =R.drawable.test;
+       cameraScreenCustomization.logoIcon =R.drawable.test;
 
         Intent intent = SelfieCameraActivity.getFaceMatchCameraIntent(this, cameraScreenCustomization);
         startActivityForResult(intent, ACCURA_FACEMATCH_CAMERA);
